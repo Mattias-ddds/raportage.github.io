@@ -1,0 +1,441 @@
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vooraf Ingevulde Tekst met Invulvelden</title>
+<style>
+    body {
+        font-family: sans-serif;
+        margin: 20px;
+        background-color: #f4f4f4;
+        overflow-y: auto;
+    }
+
+    .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    #origineleTekst label {
+        margin-right: 10px;
+    }
+
+    .inline-input-dropdown {
+        display: inline-flex;
+        align-items: stretch;
+        margin-right: 5px;
+    }
+
+    .inline-input-dropdown input[type="text"] {
+        margin-right: 0;
+    }
+
+    .inline-input-dropdown select {
+        width: auto;
+        min-width: 0;
+        height: auto;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-color: #eee;
+        border: 1px solid #ccc;
+        border-left: none;
+        padding: 0 20px 0 5px;
+        cursor: pointer;
+        background-image: url('data:image/svg+xml;utf8,<svg fill="currentColor" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
+        background-repeat: no-repeat;
+        background-position: center right 5px;
+        background-size: 16px;
+        border-radius: 0 5px 5px 0;
+        min-height: 25px;
+        width: 25px;
+        text-indent: -9999px;
+        overflow: hidden;
+    }
+
+    .inline-input-dropdown select::-ms-expand {
+        display: none;
+    }
+
+    #toonResultaat {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+    #toonResultaat:hover {
+        background-color: #0056b3;
+    }
+
+    #ingevuldeTekst {
+        margin-top: 20px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+        display: none;
+    }
+
+    #Outputverwerken {
+        width: 550px;
+        height: 80px;
+        border-radius: 20px;
+        background-color: white;
+        color: black;
+        border-color: #9002;
+        padding: 10px;
+        box-sizing: border-box;
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+        margin-top: 20px;
+    }
+
+    #bijzonderhedenContainer {
+        display: none;
+        margin-top: 10px;
+    }
+
+    #bijzonderhedenContainer input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .editable-placeholder-wrapper {
+        display: inline-block;
+        border-bottom: 0px dotted lightgrey;
+    }
+
+    .editable-placeholder {
+        color: lightgrey;
+        border: none;
+        background: none;
+        padding: 0;
+        margin: 0;
+        display: inline;
+        font-family: sans-serif;
+        font-size: inherit;
+        box-sizing: border-box;
+        width: auto;
+    }
+
+    .editable-placeholder:focus {
+        outline: none;
+    }
+
+    #actieNaTaakjesContainer {
+        display: none;
+        margin-top: 10px;
+    }
+
+    #werkblok3Container {
+        display: none;
+        margin-top: 10px;
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <p id="origineleTekst">
+            <input type="text" id="clientVeld" placeholder="Cliënt">
+            kwam vandaag
+            <span class="inline-input-dropdown">
+                <input type="text" id="boosVeld" placeholder="Emotie">
+                <select id="boosDropdown" data-target="boosVeld">
+                    <option value="kies">Kies</option>
+                    <option value="boos">Boos</option>
+                    <option value="gefrustreerd">Gefrustreerd</option>
+                </select>
+            </span>
+            binnen.
+            <select id="persoonDropdown">
+                <option value="Kies">Kies</option>
+                <option value="Hij">Hij</option>
+                <option value="Ze">Ze</option>
+            </select>
+            begon aan
+            <span class="editable-placeholder-wrapper"><input type="text" id="editableSpel" class="editable-placeholder" value="een spelletje"></span>
+            samen met
+            <input type="text" id="metWieVeld" placeholder="met wie">. In werkblok 1 is
+            <span class="naamCliënt"></span>
+            <span class="inline-input-dropdown">
+                <input type="text" id="werkblok1EmotieVeld" placeholder="Emotie">
+                <select id="werkblok1EmotieDropdown" data-target="werkblok1EmotieVeld">
+                    <option value="kies">kies</option>
+                    <option value="super goed">super goed</option>
+                    <option value="niet">niet</option>
+                    <option value="geconcentreerd">geconcentreerd</option>
+                    <option value="met meer dan gemiddelde aansturing wel">met meer dan gemiddelde aansturing</option>
+                    <option value="wel gewerkt, maar niet alle taakjes af">wel gewerkt, maar niet alle taakjes af</option>
+                </select>
+            </span>
+            bezig geweest met
+            <input type="text" id="taakjeWerkblok1" placeholder="taakje werkblok 1">.
+            In de pauze heeft
+            <span class="naamCliënt">Cliënt</span>
+            <span class="inline-input-dropdown">
+                <input type="text" id="pauzeActieVeld" placeholder="Emotie">
+                <select id="pauzeDropdownPauze" data-target="pauzeActieVeld">
+                    <option value="kies">kies</option>
+                    <option value="enthousiast mee gedaan">enthousiast mee gedaan</option>
+                    <option value="niet mee gedaan, met maar">niet mee gedaan, met... maar</option>
+                    <option value="leuk gespeeld">leuk gespeeld</option>
+                </select>
+            </span>
+            <span class="inline-input-dropdown">
+                <input type="text" id="extraVeldPauze" placeholder="Actie">
+                <select id="dropdownVeldPauze" style="display: none;"></select>
+            </span>.
+    In werkblok 2 heeft
+            <span class="naamCliënt">Cliënt</span>
+            <span class="inline-input-dropdown">
+                <input type="text" id="naPauzeVeld" placeholder="Emotie">
+                <select id="naPauzeDropdown" data-target="naPauzeVeld">
+                    <option value="kies">kies</option>
+                    <option value="super goed">super goed</option>
+                    <option value="niet">niet</option>
+                    <option value="geconcentreerd">geconcentreerd</option>
+                    <option value="met meer dan gemiddelde aansturing wel">met meer dan gemiddelde aansturing</option>
+                    <option value="wel gewerkt, maar niet alle taakjes af">wel gewerkt, maar niet alle taakjes af</option>
+                </select>
+            </span>
+            gewerkt aan.
+            <input type="text" id="taakjeWerkblok2" placeholder="taakje werkblok 2">
+            <span class="inline-input-dropdown">
+                <select id="actieNaTaakjesVraag">
+                    <option value="nee">Is er een actie na de taakjes gedaan?</option>
+                    <option value="ja">Ja</option>
+                    <option value="nee">Nee</option>
+                </select>
+            </span>
+            <div id="actieNaTaakjesContainer">
+                Na de taakjes heeft
+                <span class="naamCliënt">Cliënt</span>
+                <span class="editable-placeholder-wrapper"><input type="text" id="editableEen" class="editable-placeholder" value="een"></span>
+                <input type="text" id="extraInfoNaWerken" placeholder="Actie na taakjes">
+                <span class="editable-placeholder-wrapper"><input type="text" id="editableGedaan" class="editable-placeholder" value="gedaan"></span>.
+            </div>
+
+            <span class="inline-input-dropdown">
+                <select id="werkblok3Vraag">
+                    <option value="nee">Was er een werkblok 3?</option>
+                    <option value="ja">Ja</option>
+                    <option value="nee">Nee</option>
+                </select>
+            </span>
+            <div id="werkblok3Container">
+                In werkblok 3 heeft
+                <span class="naamCliënt">Cliënt</span>
+                <span class="inline-input-dropdown">
+                    <input type="text" id="pauzeActieVeld1" placeholder="Emotie werkblok 3">
+                    <select id="pauzeDropdownWerkblok3" data-target="pauzeActieVeld1">
+                        <option value="kies">kies</option>
+                        <option value="enthousiast mee gedaan">enthousiast mee gedaan</option>
+                        <option value="niet mee gedaan, met maar">niet mee gedaan, met... maar</option>
+                        <option value="leuk gespeeld">leuk gespeeld</option>
+                    </select>
+                </span>
+                <span class="inline-input-dropdown">
+                    <input type="text" id="extraVeldWerkblok3" placeholder="Actie werkblok 3">
+                    <select id="dropdownVeldWerkblok3" style="display: none;"></select>
+                </span>.
+            </div>
+
+            <span class="inline-input-dropdown">
+                <select id="bijzonderhedenVraag">
+                   <option value="nee">Is er nog iets bijzonders gebeurd?</option>
+                     <option value="ja">Ja</option>
+                     <option value="nee">Nee</option>
+                </select>
+            </span>
+            <div id="bijzonderhedenContainer">
+                <input type="text" id="bijzonderhedenVeld" placeholder="Beschrijf wat er bijzonder was">
+            </div>
+
+            <span class="naamCliënt">Cliënt</span>, heeft vandaag een
+            <span class="inline-input-dropdown">
+                <input type="text" id="openVeldEmotie" placeholder="Algemene gemoedstoestand">
+                <select id="openVeldDropdown" data-target="openVeldEmotie">
+                    <option value="kies">Kies</option>
+                    <option value="goede">goede</option>
+                    <option value="boze">boos</option>
+                    <option value="verdrietige">verdrietig</option>
+                    <option value="blije">blij</option>
+                    <option value="neutrale">neutraal</option>
+                </select>
+            </span>
+            dag gehad.
+        </p>
+
+        <button id="toonResultaat">Toon Ingevulde Tekst</button>
+
+        <h2>Ingevulde Tekst:</h2>
+        <p id="ingevuldeTekst"></p>
+    </div>
+
+    <textarea id="Outputverwerken" placeholder="Verwerk hier uw output"></textarea>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = {
+                clientVeld: '#clientVeld',
+                persoonDropdown: '#persoonDropdown',
+                spelVeld2: '#spelVeld2',
+                metWieVeld: '#metWieVeld',
+                bijzonderhedenVraagDropdown: '#bijzonderhedenVraag',
+                bijzonderhedenContainer: '#bijzonderhedenContainer',
+                bijzonderhedenVeld: '#bijzonderhedenVeld',
+                toonResultaatKnop: '#toonResultaat',
+                ingevuldeTekstElement: '#ingevuldeTekst',
+                outputVerwerkenVeld: '#Outputverwerken',
+                extraInfoNaWerken: '#extraInfoNaWerken',
+                naamCliëntSpans: '.naamCliënt',
+                inlineDropdowns: '.inline-input-dropdown select',
+                werkblok1EmotieVeld: '#werkblok1EmotieVeld',
+                taakjeWerkblok1Veld: '#taakjeWerkblok1',
+                taakjeWerkblok2Veld: '#taakjeWerkblok2',
+                boosVeld: '#boosVeld',
+                pauzeActieVeld: '#pauzeActieVeld',
+                extraVeldPauze: '#extraVeldPauze',
+                naPauzeVeld: '#naPauzeVeld',
+                openVeldEmotie: '#openVeldEmotie',
+                editableEenInput: '#editableEen',
+                editableGedaanInput: '#editableGedaan',
+                editableSpelInput: '#editableSpel',
+                werkblok3VraagDropdown: '#werkblok3Vraag',
+                werkblok3Container: '#werkblok3Container',
+                pauzeActieVeld1: '#pauzeActieVeld1',
+                extraVeldWerkblok3: '#extraVeldWerkblok3',
+                actieNaTaakjesVraagDropdown: '#actieNaTaakjesVraag',
+                actieNaTaakjesContainer: '#actieNaTaakjesContainer',
+                pauzeDropdownPauze: '#pauzeDropdownPauze',
+                dropdownVeldPauze: '#dropdownVeldPauze',
+                pauzeDropdownWerkblok3: '#pauzeDropdownWerkblok3',
+                dropdownVeldWerkblok3: '#dropdownVeldWerkblok3',
+                bijzonderhedenVraag: '#bijzonderhedenVraag' // Voeg de select zelf toe
+            };
+
+            const getElement = (selector) => document.querySelector(selector);
+            const getAllElements = (selector) => document.querySelectorAll(selector);
+
+            const updateNaamCliëntSpans = () => {
+                const cliëntNaam = getElement(elements.clientVeld)?.value || getElement(elements.clientVeld)?.placeholder || "[Naam cliënt]";
+                getAllElements(elements.naamCliëntSpans).forEach(span => {
+                    span.textContent = cliëntNaam;
+                });
+            };
+
+            getElement(elements.clientVeld)?.addEventListener('input', updateNaamCliëntSpans);
+
+            getAllElements(elements.inlineDropdowns).forEach(selectElement => {
+                selectElement.addEventListener('change', function() {
+                    const targetInput = getElement(`#${this.dataset.target}`);
+                    if (targetInput) {
+                        targetInput.value = this.value;
+                    }
+                });
+            });
+
+            getElement(elements.werkblok3VraagDropdown)?.addEventListener('change', function() {
+                getElement(elements.werkblok3Container).style.display = this.value === 'ja' ? 'block' : 'none';
+                updateIngevuldeTekst();
+            });
+
+            getElement(elements.actieNaTaakjesVraagDropdown)?.addEventListener('change', function() {
+                getElement(elements.actieNaTaakjesContainer).style.display = this.value === 'ja' ? 'block' : 'none';
+                updateIngevuldeTekst();
+            });
+
+            getElement(elements.bijzonderhedenVraagDropdown)?.addEventListener('change', function() {
+                getElement(elements.bijzonderhedenContainer).style.display = this.value === 'ja' ? 'block' : 'none';
+                updateIngevuldeTekst();
+            });
+
+            const updateEditableWrapperWidth = () => {
+                ['editableEenInput', 'editableGedaanInput', 'editableSpelInput'].forEach(key => {
+                    const input = getElement(elements[key]);
+                    if (input?.parentNode) {
+                        input.parentNode.style.width = input.value.length + 'ch';
+                    }
+                });
+            };
+
+        const updateIngevuldeTekst = () => {
+            const cliëntNaam = getElement(elements.clientVeld)?.value || "[Naam cliënt]";
+            let bijzonderhedenTekst = '';
+            let bijzonderhedenVraagTekst = '';
+            if (getElement(elements.bijzonderhedenVraagDropdown)?.value === '' && getElement(elements.bijzonderhedenVeld)?.value.trim() !== '') {
+                bijzonderhedenTekst = `Er is nog iets bijzonders gebeurd: ${getElement(elements.bijzonderhedenVeld).value}.`;
+                bijzonderhedenVraagTekst = getElement(elements.bijzonderhedenVraag)?.options[getElement(elements.bijzonderhedenVraag)?.selectedIndex]?.text;
+            }
+
+            let werkblok3Tekst = '';
+            if (getElement(elements.werkblok3VraagDropdown)?.value === 'ja') {
+                werkblok3Tekst = `In de werkblok 3 heeft ${cliëntNaam} ${getElement(elements.pauzeActieVeld1)?.value} ${getElement(elements.extraVeldWerkblok3)?.value}. `;
+            }
+
+            let actieNaTaakjesTekst = '';
+            if (getElement(elements.actieNaTaakjesVraagDropdown)?.value === 'ja') {
+                actieNaTaakjesTekst = `Na de taakjes heeft ${cliëntNaam} <span class="editable-placeholder-wrapper">${getElement(elements.editableEenInput)?.value}</span> ${getElement(elements.extraInfoNaWerken)?.value} <span class="editable-placeholder-wrapper">${getElement(elements.editableGedaanInput)?.value}</span>. `;
+            }
+
+            let ingevuldeTekst = `${cliëntNaam} kwam vandaag ${getElement(elements.boosVeld)?.value} binnen. ${getElement(elements.persoonDropdown)?.value} begon aan <span class="editable-placeholder-wrapper">${getElement(elements.editableSpelInput)?.value}</span> samen met ${getElement(elements.metWieVeld)?.value}. In werkblok 1 is ${cliëntNaam} ${getElement(elements.werkblok1EmotieVeld)?.value} bezig geweest met ${getElement(elements.taakjeWerkblok1Veld)?.value}. In de pauze heeft ${cliëntNaam} ${getElement(elements.pauzeActieVeld)?.value} ${getElement(elements.extraVeldPauze)?.value}. In werkblok 2 heeft ${cliëntNaam} ${getElement(elements.naPauzeVeld)?.value} gewerkt aan ${getElement(elements.taakjeWerkblok2Veld)?.value}.`;
+
+            if (actieNaTaakjesTekst) {
+                ingevuldeTekst += ` ${actieNaTaakjesTekst}`;
+            }
+
+            if (werkblok3Tekst) {
+                ingevuldeTekst += ` ${werkblok3Tekst}`;
+            }
+
+            if (bijzonderhedenTekst) {
+                ingevuldeTekst += ` ${bijzonderhedenVraagTekst}${bijzonderhedenTekst}`;
+            }
+
+            ingevuldeTekst += ` ${cliëntNaam}, heeft vandaag een ${getElement(elements.openVeldEmotie)?.value} dag gehad.`;
+
+            const ingevuldeTekstElement = getElement(elements.ingevuldeTekstElement);
+            const outputVerwerkenVeld = getElement(elements.outputVerwerkenVeld);
+
+            if (ingevuldeTekstElement) ingevuldeTekstElement.innerHTML = ingevuldeTekst;
+            if (outputVerwerkenVeld) outputVerwerkenVeld.value = ingevuldeTekst.replace(/<span class="editable-placeholder-wrapper">|<\/span>/g, '');
+            updateEditableWrapperWidth();
+        };
+
+            getElement(elements.toonResultaatKnop)?.addEventListener('click', () => {
+                updateIngevuldeTekst();
+                const ingevuldeTekstElement = getElement(elements.ingevuldeTekstElement);
+                if (ingevuldeTekstElement) ingevuldeTekstElement.style.display = 'block';
+            });
+
+            ['clientVeld', 'editableEenInput', 'editableGedaanInput', 'editableSpelInput', 'pauzeActieVeld1', 'extraVeldPauze', 'extraInfoNaWerken', 'extraVeldWerkblok3', 'bijzonderhedenVeld'].forEach(key => {
+                getElement(elements[key])?.addEventListener('input', updateIngevuldeTekst);
+            });
+
+            ['bijzonderhedenVraagDropdown', 'werkblok3VraagDropdown', 'actieNaTaakjesVraagDropdown'].forEach(key => {
+                getElement(elements[key])?.addEventListener('change', updateIngevuldeTekst);
+            });
+
+            updateNaamCliëntSpans();
+            updateEditableWrapperWidth();
+            getElement(elements.werkblok3Container).style.display = getElement(elements.werkblok3VraagDropdown)?.value === 'ja' ? 'block' : 'none';
+            getElement(elements.actieNaTaakjesContainer).style.display = getElement(elements.actieNaTaakjesVraagDropdown)?.value === 'ja' ? 'block' : 'none';
+            getElement(elements.bijzonderhedenContainer).style.display = getElement(elements.bijzonderhedenVraagDropdown)?.value === 'ja' ? 'block' : 'none';
+        });
+    </script>
+</body>
+</html>
